@@ -1,63 +1,51 @@
 class Solution {
     public int minDays(int[] arr, int m, int k) {
         
-        // let us sort the array for the maximum element 
-        // let us declare and initiaize the array to -1
+       
         int n=arr.length;
         int min=arr[0];
         int max=arr[0];
-        if(n<(long)m*k)
-        {
-            return -1;
-        }
         for(int i=0;i<n;i++)
         {
-          if(max<arr[i])
-          {
-            max=arr[i];
-          }
-          if(min>arr[i])
-          {
-            min=arr[i];
-          }
+            if(max<arr[i])
+            {
+                max=arr[i];
+            }
+            if(min>arr[i]){
+                min=arr[i];
+            }
         }
-        int low=min,high=max;
+        int low=min;
+        int high=max;
         int ans=-1;
         while(low<=high)
         {
             int mid=low+(high-low)/2;
-            int i=0;
-            int j=0;
             int count=0;
-            while(i<n)
+            int j=0;
+            for(int i=0;i<n;i++)
             {
-        
                 if(arr[i]<=mid)
                 {
-                    j++;
-                     
+                    count+=1;
                 }
                 else
                 {
-                    count+=(j/k);
-                    j=0;
+                    j+=(count/k);
+                    count=0;
                 }
-                i++;
-
             }
-            count += (j / k);
-            if(count<m)
+            j+=(count/k);
+            if(j>=m)
             {
-               low=mid+1;
+                ans=mid;
+                high=mid-1;
             }
             else
             {
-                high=mid-1;
-                ans=mid;
+                low=mid+1;
             }
-            
-
         }
         return ans;
-    }
+}
 }
