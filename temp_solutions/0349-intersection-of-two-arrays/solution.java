@@ -1,38 +1,38 @@
 class Solution {
     public int[] intersection(int[] nums1, int[] nums2) 
     {
+        int i=0;
+        int j=0;
+        int n1 = nums1.length;
+        int n2 = nums2.length;
+        ArrayList<Integer> list = new ArrayList<>();
         Arrays.sort(nums1);
         Arrays.sort(nums2);
-        int n1=nums1.length;
-        int n2=nums2.length;
-        int i=0,j=0;
-        ArrayList<Integer> nums3=new ArrayList<>();
-        while(i<n1 && j<n2)
+        while(i < n1 && j < n2)
         {
-            if(nums1[i]>nums2[j])
+            if(nums1[i]==nums2[j] )
             {
-                j++;
-            }
-            else if(nums1[i]<nums2[j])
-            {
-                i++;
-            }
-            else
-            {
-                if(nums3.size()==0 || nums1[i]!=nums3.get(nums3.size()-1))
+                if(list.size()==0 || list.get(list.size()-1)!=nums1[i])
                 {
-                    nums3.add(nums1[i]);
-                    
+                list.add(nums1[i]);
                 }
+                i++;
                 j++;
+            }
+            else if(nums1[i]>nums2[j])
+            {
+                j++;
+            }
+            else if(nums2[j]>nums1[i]){
                 i++;
             }
         }
-        int[] nums4 = new int[nums3.size()];
-        for(int k=0;k<nums4.length;k++)
+        
+        int[] arr = new int[list.size()];
+        for(int k=0;k<list.size();k++)
         {
-            nums4[k]=nums3.get(k);
+            arr[k]=list.get(k);
         }
-        return nums4;
+        return arr;
     }
 }
