@@ -1,50 +1,48 @@
 class Solution {
-    public int[] searchRange(int[] arr, int target) {
-        int size=arr.length;
-        
-        int low=0;
-        int high=size-1;
-        int n=-1,n1=-1;
-        while(low<=high)
+    public int[] searchRange(int[] nums, int target) {
+        int n = nums.length;
+        int left = 0;
+        int right = n-1;
+        int first = -1;
+        int last = -1;
+        while(left<=right)
         {
-            int mid=low+(high-low)/2;
-            if(arr[mid]==target)
+            int mid = left + (right-left)/2;
+            if(nums[mid]==target)
             {
-                n=mid;
-                high=mid-1;
+                right=mid-1;
+                first = mid;
             }
-            else if(arr[mid]>target)
+            else if(nums[mid]<target)
             {
-                high=mid-1;
+                left = mid+1;
             }
             else
             {
-                low=mid+1;
+                right=mid-1;
             }
         }
-        low=0;
-        high=size-1;
-         while(low<=high)
+        left=0;
+        right=n-1;
+        while(left<=right)
         {
-            int mid=low+(high-low)/2;
-            if(arr[mid]==target)
+            int mid = left + (right-left)/2;
+            if(nums[mid]==target)
             {
-                n1=mid;
-                low=mid+1;
+                left = mid+1;
+                last = mid;
             }
-            else if(arr[mid]>target)
+            else if(nums[mid]<target)
             {
-                high=mid-1;
+                 left = mid+1;
+                
             }
             else
             {
-                low=mid+1;
+                right=mid-1;
             }
         }
-        return new int[]{n,n1};
-
-
-    
+        return new int[]{first,last};
 }
 }
 
