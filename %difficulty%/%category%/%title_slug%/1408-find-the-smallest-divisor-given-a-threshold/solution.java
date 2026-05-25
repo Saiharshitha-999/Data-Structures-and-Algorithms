@@ -1,42 +1,32 @@
 class Solution {
-    public int smallestDivisor(int[] arr, int threshold)
+    public int smallestDivisor(int[] nums, int limit)
     {
-        int n=arr.length;
-        int min=1;
-        int max=arr[0];
-
-        for(int i=0;i<n;i++)
+        int n = nums.length;
+        int left = 1;
+        int right = Integer.MIN_VALUE;
+        for(int num : nums)
         {
-            if(max<arr[i])
-            {
-                max=arr[i];
-            }
-            
+            right = Math.max(right,num);
         }
-        int low=min;
-        int high=max;
-        
-        int ans=-1;
-        int mid=-1;
-        while(low<=high)
-        {
-            int count=0;
-            mid=low+(high-low)/2;
-            for(int i=0;i<n;i++)
-            {
-                count+=(int) Math.ceil((double)arr[i]/mid);
-            }
-        if(count<=threshold)
-        {
-            ans=mid;
-            high=mid-1;
-        }
-        else
-        {
-            low=mid+1;
-        }
-        }  
-    
-    return ans;
+       int ans = 0;
+       while(left<=right)
+       {
+          int mid = left + (right - left)/2;
+          int sum = 0;
+          for(int i = 0; i < n; i++)
+          {
+              sum+=Math.ceil((double)nums[i]/mid);
+          }
+          if(sum <= limit)
+          {
+            right = mid-1;
+            ans = mid;
+          }
+          else
+          {
+              left = mid+1;
+          }
+       }
+       return ans;
 }
 }
