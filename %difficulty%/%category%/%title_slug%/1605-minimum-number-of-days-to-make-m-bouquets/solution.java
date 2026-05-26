@@ -1,51 +1,55 @@
 class Solution {
-    public int minDays(int[] arr, int m, int k) {
+    public int minDays(int[] nums, int m, int k) {
         
-       
-        int n=arr.length;
-        int min=arr[0];
-        int max=arr[0];
-        for(int i=0;i<n;i++)
+        int n = nums.length;
+        int ans = -1;
+        if((long)k * m > n)
         {
-            if(max<arr[i])
-            {
-                max=arr[i];
-            }
-            if(min>arr[i]){
-                min=arr[i];
-            }
+            return -1;
         }
-        int low=min;
-        int high=max;
-        int ans=-1;
-        while(low<=high)
+
+        int left = Integer.MAX_VALUE;
+
+        int right = 0;
+
+        for(int x : nums)
         {
-            int mid=low+(high-low)/2;
-            int count=0;
-            int j=0;
-            for(int i=0;i<n;i++)
+            left = Math.min(left,x);
+
+            right = Math.max(right,x);
+        }
+
+         while(left <= right)
+         {
+            int mid = left + (right - left)/2;
+            int count = 0;
+            int bouquets = 0;
+            for(int x : nums)
             {
-                if(arr[i]<=mid)
+                if(x <= mid)
                 {
-                    count+=1;
+                    count++;
                 }
-                else
+                else{
+                    count = 0;
+                }
+                if(count == k)
                 {
-                    j+=(count/k);
-                    count=0;
+                    bouquets++;
+                    count = 0;
                 }
             }
-            j+=(count/k);
-            if(j>=m)
+           
+            if(bouquets >= m)
             {
-                ans=mid;
-                high=mid-1;
+                ans = mid;
+                right = mid-1;
             }
             else
             {
-                low=mid+1;
+                left = mid+1;
             }
-        }
-        return ans;
+         }
+         return ans;
 }
 }
