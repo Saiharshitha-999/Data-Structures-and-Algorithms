@@ -5,21 +5,25 @@ class Solution {
         int count = 0;
         for(char x : s.toCharArray())
         {
-           if(x == '(')
+           if(count == 0)
            {
-            if(count != 0)
-            {
-                str.append(x);
-            }
-            count++;
+              count++;
            }
-           else
+           else if(count>0)
            {
-            count--;
-            if(count != 0)
-            {
-                str.append(x);
-            }
+                if(x == '(')
+                {
+                    str.append(x);
+                    count++;
+                }
+                else
+                {
+                    count--;
+                    if(count >0 )
+                    {
+                    str.append(x);
+                    }
+                }
            }
         }
         return str.toString();
