@@ -7,7 +7,6 @@ class Solution {
 
         return ans;
     }
-
     public void backtrack(
     List<String> ans,
     String current,
