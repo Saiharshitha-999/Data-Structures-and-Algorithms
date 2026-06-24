@@ -4,7 +4,6 @@ class Solution {
         Arrays.sort(nums);
         List<List<Integer>> arr = new ArrayList<>();
         helper(0,nums,new ArrayList<>(),arr);
-       
         return arr;
     }
     public void helper(int index,int[] candidates,List<Integer> bt,List<List<Integer>> arr)
