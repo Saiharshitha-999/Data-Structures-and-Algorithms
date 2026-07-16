@@ -20,7 +20,6 @@ class KthLargest {
             }
         }
     }
-
     public int add(int val) 
     {
         
