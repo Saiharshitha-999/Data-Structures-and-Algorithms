@@ -14,42 +14,43 @@
  * }
  */
 class Solution {
-
-    public List<Integer> rightSideView(TreeNode root) {
-
-        List<Integer> ans = new ArrayList<>();
-
-        if (root == null) {
-            return ans;
+    class Pair
+    {
+        int rows;
+        TreeNode node;
+        Pair(int rows, TreeNode node)
+        {
+            this.rows = rows;
+            this.node = node;
+        }
+    }
+    public List<Integer> rightSideView(TreeNode root) 
+    {
+        List<Integer> list = new ArrayList<>();
+        if(root == null)
+        {
+            return list;
         }
 
-        Queue<TreeNode> queue = new LinkedList<>();
+        TreeMap<Integer,Integer> map = new TreeMap<>();
 
-        queue.offer(root);
-
-        while (!queue.isEmpty()) {
-
-            int size = queue.size();
-
-            for (int i = 0; i < size; i++) {
-
-                TreeNode current = queue.poll();
-
-                // Last node of the current level
-                if (i == size - 1) {
-                    ans.add(current.val);
-                }
-
-                if (current.left != null) {
-                    queue.offer(current.left);
-                }
-
-                if (current.right != null) {
-                    queue.offer(current.right);
-                }
+        Queue<Pair> queue = new LinkedList<>();
+        queue.offer(new Pair(0,root));
+        while(!queue.isEmpty())
+        {
+            Pair node = queue.poll();
+            map.put(node.rows,node.node.val);
+            if(node.node.left != null)
+            {
+                queue.offer(new Pair(node.rows+1,node.node.left));
+            }
+            if(node.node.right != null)
+            {
+                queue.offer(new Pair(node.rows+1 ,node.node.right));
             }
         }
-
-        return ans;
+        list.addAll(map.values());
+        return list;
+        
     }
 }
