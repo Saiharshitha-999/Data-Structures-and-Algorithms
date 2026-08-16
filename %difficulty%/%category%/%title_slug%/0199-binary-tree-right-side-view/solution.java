@@ -14,43 +14,36 @@
  * }
  */
 class Solution {
-    class Pair
-    {
-        int rows;
-        TreeNode node;
-        Pair(int rows, TreeNode node)
-        {
-            this.rows = rows;
-            this.node = node;
-        }
-    }
     public List<Integer> rightSideView(TreeNode root) 
     {
-        List<Integer> list = new ArrayList<>();
+        List<Integer> l1 = new ArrayList<>();
         if(root == null)
         {
-            return list;
+            return l1;
         }
-
-        TreeMap<Integer,Integer> map = new TreeMap<>();
-
-        Queue<Pair> queue = new LinkedList<>();
-        queue.offer(new Pair(0,root));
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
         while(!queue.isEmpty())
         {
-            Pair node = queue.poll();
-            map.put(node.rows,node.node.val);
-            if(node.node.left != null)
+            int size = queue.size();
+            for(int i = 0 ;i < size; i++)
             {
-                queue.offer(new Pair(node.rows+1,node.node.left));
+                TreeNode node = queue.poll();
+                if(node.left != null)
+                {
+                    queue.offer(node.left);
+                }
+                if(node.right != null)
+                {
+                    queue.offer(node.right);
+                }
+                if(i == size - 1)
+                {
+                    l1.add(node.val);
+                }
             }
-            if(node.node.right != null)
-            {
-                queue.offer(new Pair(node.rows+1 ,node.node.right));
-            }
+
         }
-        list.addAll(map.values());
-        return list;
-        
+        return l1;
     }
 }
