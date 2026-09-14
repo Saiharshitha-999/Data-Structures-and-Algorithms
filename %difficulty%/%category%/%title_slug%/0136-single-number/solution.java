@@ -1,11 +1,19 @@
 class Solution {
-    public int singleNumber(int[] arr)
+    public int singleNumber(int[] nums) 
     {
-        int XOR=0;
-        for(int i=0;i<arr.length;i++)
+        Arrays.sort(nums);
+        int i = 0;
+        while(i < nums.length - 1)
         {
-           XOR=XOR^arr[i];
+            if(nums[i] != nums[i+1])
+            {
+                return nums[i];
+            }
+            else
+            {
+                i+=2;
+            }
         }
-        return XOR;
-}
+        return nums[nums.length -1];
+    }
 }
