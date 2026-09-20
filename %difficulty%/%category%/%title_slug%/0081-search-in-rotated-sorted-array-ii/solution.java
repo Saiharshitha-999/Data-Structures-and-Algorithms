@@ -1,45 +1,40 @@
 class Solution {
-    public boolean search(int[] arr, int target) {
+    public boolean search(int[] arr, int target) 
+    {
+        int start = 0;
+        int end = arr.length - 1;
         
-        int size=arr.length;
-        int low=0;
-        int high=size-1;
-        while(low<=high)
-        {
-            int mid=low+(high-low)/2;
-            if(arr[mid]==target)
-            {
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            
+            if (arr[mid] == target) {
                 return true;
             }
-            if(arr[low] == arr[mid] && arr[mid] == arr[high]) 
+            if(arr[start] == arr[mid] && arr[mid] == arr[end]) 
             {
-                low++;
-                high--;
+                start++;
+                end--;
+                continue;
             }
-           else if(arr[mid]<=arr[high])
-           {
-                if(target>=arr[mid] && target<=arr[high])
-                {
-                    low=mid+1;
+            // Case 1: Left half is sorted
+            if (arr[start] <= arr[mid]) {
+                // Check if target lies within the sorted left half bounds
+                if (target >= arr[start] && target < arr[mid]) {
+                    end = mid - 1; // Search left
+                } else {
+                    start = mid + 1; // Search right
                 }
-                else
-                {
-                    high=mid-1;
+            } 
+            // Case 2: Right half must be sorted
+            else {
+                // Check if target lies within the sorted right half bounds
+                if (target > arr[mid] && target <= arr[end]) {
+                    start = mid + 1; // Search right
+                } else {
+                    end = mid - 1; // Search left
                 }
-           }
-           else
-           {
-              if(target<=arr[mid] && target>=arr[low])
-              {
-                high=mid-1;
-
-              }
-              else
-              {
-                low=mid+1;
-              }
-           }
-       }
-       return false;
-}
+            }
+        }
+        return false; // Target not found
+    }
 }
