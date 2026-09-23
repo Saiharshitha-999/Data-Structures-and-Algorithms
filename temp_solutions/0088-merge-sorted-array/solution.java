@@ -1,6 +1,11 @@
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) 
     {
+        
+      /* just take three pointers bro i at the last of m + n - 1
+         j  = at m - 1
+         k  = at n-1 and start ti put larger elements into the array from both
+        */
         //It is Three pointer technique
         int j,k,i;
 
@@ -24,3 +29,4 @@ class Solution {
         
     }
 }
+
