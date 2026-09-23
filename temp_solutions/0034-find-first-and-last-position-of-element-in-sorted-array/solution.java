@@ -45,4 +45,3 @@ class Solution {
         return new int[]{first,last};
 }
 }
-
