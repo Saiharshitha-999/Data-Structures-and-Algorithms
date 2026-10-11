@@ -1,9 +1,9 @@
 name: Sync DSA Portfolio
 
 on:
-  workflow_dispatch: # Lets you manually trigger the import for your 200+ old problems
+  workflow_dispatch:
   schedule:
-    - cron: '0 8 * * *' # Automatically checks and pulls new solutions every day at 8 AM
+    - cron: '0 8 * * *'
 
 jobs:
   build:
@@ -16,6 +16,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           leetcode-csrf-token: ${{ secrets.LEETCODE_CSRF_TOKEN }}
           leetcode-session: ${{ secrets.LEETCODE_SESSION }}
-          
-          # This organizes your folders strictly by Difficulty -> Topic/Category -> Problem Name
           destination-folder: '${{ leetcode.difficulty }}/${{ leetcode.category }}/${{ leetcode.title_slug }}'
