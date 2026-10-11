@@ -16,4 +16,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           leetcode-csrf-token: ${{ secrets.LEETCODE_CSRF_TOKEN }}
           leetcode-session: ${{ secrets.LEETCODE_SESSION }}
-          destination-folder: '${{ leetcode.difficulty }}/${{ leetcode.category }}/${{ leetcode.title_slug }}'
+          
+          # Fix: Using raw format strings instead of GitHub evaluation wrappers
+          destination-folder: '%difficulty%/%category%/%title_slug%'
