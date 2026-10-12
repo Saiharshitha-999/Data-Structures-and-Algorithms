@@ -1,0 +1,42 @@
+
+name: Migrate Existing LeetCode Solutions
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Migrate historical Java solutions
+        run: python .github/scripts/migrate_existing.py
+
+      - name: Commit organized solutions
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Organize historical LeetCode solutions by topic"
+            git push origin HEAD:${GITHUB_REF_NAME}
+          else
+            echo "No migration changes to commit."
+          fi
