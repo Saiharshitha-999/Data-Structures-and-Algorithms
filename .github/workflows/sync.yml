@@ -1,19 +1,58 @@
+
 name: Sync DSA Portfolio
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 8 * * *'
+    - cron: "0 8 * * *"
+
+permissions:
+  contents: write
 
 jobs:
-  build:
+  sync:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Sync Code
+      - name: Sync LeetCode submissions
         uses: joshcai/leetcode-sync@v1.7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           leetcode-csrf-token: ${{ secrets.LEETCODE_CSRF_TOKEN }}
           leetcode-session: ${{ secrets.LEETCODE_SESSION }}
-          destination-folder: '%difficulty%/%category%/%title_slug%'
+          destination-folder: temp_solutions
+          commit-header: "[LeetCode Sync]"
+
+  organize:
+    needs: sync
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Organize Java solutions
+        run: python .github/scripts/organize_leetcode.py
+
+      - name: Commit organized solutions
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Organize LeetCode solutions by topic"
+            git push origin HEAD:main
+          else
+            echo "No organization changes to commit."
+          fi
