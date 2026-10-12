@@ -68,17 +68,14 @@ def get_topic(folder_name, session):
         raise RuntimeError(f"Metadata lookup failed: {slug}")
 
     question = data["data"].get("question")
-
     if not question:
         raise RuntimeError(f"Problem not found: {slug}")
 
     tags = question.get("topicTags", [])
-
     if not tags:
         return "Other"
 
     tag = tags[0]["name"]
-
     return TOPIC_MAP.get(
         tag,
         re.sub(r"[^A-Za-z0-9]+", "-", tag).strip("-"),
@@ -87,9 +84,8 @@ def get_topic(folder_name, session):
 
 def main():
     if not STAGING.is_dir():
-        raise RuntimeError(
-            "temp_solutions is missing. Check the sync workflow first."
-        )
+        print("No temp_solutions directory found; nothing to organize.")
+        return
 
     session = requests.Session()
     session.headers.update({"User-Agent": "Mozilla/5.0"})
@@ -101,10 +97,8 @@ def main():
             continue
 
         java_files = list(folder.rglob("*.java"))
-
-        # Only organize folders containing Java solutions.
         if not java_files:
-            print(f"Skipping non-Java folder: {folder.name}")
+            print(f"Leaving non-Java folder untouched: {folder.name}")
             continue
 
         topic = get_topic(folder.name, session)
@@ -112,13 +106,14 @@ def main():
 
         if destination.exists():
             raise RuntimeError(
-                f"Destination already exists: {destination}"
+                f"Destination already exists: {destination}. "
+                "Nothing has been moved yet."
             )
 
         moves.append((folder, destination))
         time.sleep(0.2)
 
-    # Validate all destinations before moving anything.
+    # Validate all destinations before moving any folders.
     for source, destination in moves:
         destination.parent.mkdir(parents=True, exist_ok=True)
         source.rename(destination)
