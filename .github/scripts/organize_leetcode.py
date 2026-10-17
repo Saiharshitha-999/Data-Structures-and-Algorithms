@@ -1,6 +1,7 @@
 
 from pathlib import Path
 import re
+import shutil
 import time
 import requests
 
@@ -82,6 +83,42 @@ def get_topic(folder_name, session):
     )
 
 
+def transfer_folder(source, destination):
+    """Move new files without overwriting existing files."""
+    conflicts = []
+
+    destination.mkdir(parents=True, exist_ok=True)
+
+    for item in source.rglob("*"):
+        if not item.is_file():
+            continue
+
+        relative = item.relative_to(source)
+        target = destination / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+
+        if target.exists():
+            if item.read_bytes() == target.read_bytes():
+                print(f"Duplicate file skipped: {target}")
+            else:
+                print(f"CONFLICT: preserved both copies separately: {item}")
+                conflicts.append(item)
+            continue
+
+        shutil.copy2(item, target)
+        print(f"Added: {target}")
+
+    if conflicts:
+        print(
+            f"WARNING: {len(conflicts)} conflicting file(s) remain "
+            f"in {source}; review them before deleting anything."
+        )
+        return False
+
+    shutil.rmtree(source)
+    return True
+
+
 def main():
     if not STAGING.is_dir():
         print("No temp_solutions directory found; nothing to organize.")
@@ -89,8 +126,6 @@ def main():
 
     session = requests.Session()
     session.headers.update({"User-Agent": "Mozilla/5.0"})
-
-    moves = []
 
     for folder in sorted(STAGING.iterdir()):
         if not folder.is_dir():
@@ -105,25 +140,19 @@ def main():
         destination = Path(topic) / folder.name
 
         if destination.exists():
-            raise RuntimeError(
-                f"Destination already exists: {destination}. "
-                "Nothing has been moved yet."
-            )
+            print(f"Existing problem folder found: {destination}")
+            transfer_folder(folder, destination)
+        else:
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(folder), str(destination))
+            print(f"Organized: {destination}")
 
-        moves.append((folder, destination))
         time.sleep(0.2)
-
-    # Validate all destinations before moving any folders.
-    for source, destination in moves:
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        source.rename(destination)
 
     try:
         STAGING.rmdir()
     except OSError:
         pass
-
-    print(f"Organized {len(moves)} Java problem folders.")
 
 
 if __name__ == "__main__":
