@@ -5,15 +5,24 @@ class Solution {
         {
             return true;
         }
-        for(int i = num/2 ; i < num; i++)
+        for(int i = num/2; i < num; i++)
         {
-            String s = String.valueOf(i);
-            String sb = new StringBuilder(s).reverse().toString();
-            if((i + Integer.parseInt(sb)) == num)
+            if((i + reverse(i)) == num)
             {
                 return true;
             }
         }
         return false;
+    }
+    public int reverse(int num)
+    {
+        int n = 0;
+        while(num > 0)
+        {
+           int r = num % 10;
+           n = n * 10 + r;
+           num = num/10;
+        }
+        return n;
     }
 }
