@@ -69,8 +69,10 @@ def get_topic(folder_name, session):
         raise RuntimeError(f"Metadata lookup failed: {slug}")
 
     question = data["data"].get("question")
-    if not question:
-        raise RuntimeError(f"Problem not found: {slug}")
+
+    if not question or not question.get("topicTags"):
+        print(f"WARNING: Could not retrieve topic metadata for: {slug}")
+        return "Other"
 
     tags = question.get("topicTags", [])
     if not tags:
