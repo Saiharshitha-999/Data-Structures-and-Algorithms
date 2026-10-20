@@ -22,18 +22,15 @@ class Solution {
                 arr[j++] = sum;
                 continue;
             }
+            if(nums[b] % 2 == 0)
+            {
+                sum -= nums[b];
+            }
+
             int num1 = nums[b] + a;
             if((num1 & 1) == 0)
             {
-                if(nums[b] % 2 == 0)
-                {
-                    sum -= nums[b];
-                }
                 sum += num1;
-            }
-            else if(nums[b] % 2 == 0)
-            {
-                sum -= nums[b];
             }
             nums[b] = num1;
             arr[j++] = sum;
