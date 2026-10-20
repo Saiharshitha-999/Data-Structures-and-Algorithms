@@ -19,10 +19,11 @@ class Solution {
             int b = l[1];
             if(b >= n)
             {
+                arr[j++] = sum;
                 continue;
             }
             int num1 = nums[b] + a;
-            if(Math.abs(num1) % 2== 0)
+            if((num1 & 1) == 0)
             {
                 if(nums[b] % 2 == 0)
                 {
