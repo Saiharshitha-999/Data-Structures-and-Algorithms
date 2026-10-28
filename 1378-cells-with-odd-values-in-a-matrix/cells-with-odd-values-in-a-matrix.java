@@ -3,12 +3,11 @@ class Solution {
     {
         int[][] matrix = new int[m][n];
         int count = 0;
+     
         for(int[] i : indices)
         {
             int left = i[0];
             int right = i[1];
-
-            matrix[left][right]++;
 
             for(int j = 0; j < n; j++)
             {
@@ -18,7 +17,6 @@ class Solution {
             {
                 matrix[j][right]++;
             }
-            matrix[left][right]++;
         }
         for(int i = 0; i < m; i++)
         {
