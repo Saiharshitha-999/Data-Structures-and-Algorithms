@@ -1,25 +1,27 @@
 class Solution {
-    public boolean isAnagram(String s, String t) 
-    {
+    public boolean isAnagram(String s, String t) {
 
-        if(s.length() != t.length())
-        {
+        LinkedHashMap<Character, Integer> d1 = new LinkedHashMap<>();
+        LinkedHashMap<Character, Integer> d2 = new LinkedHashMap<>();
+
+        if (s.length() != t.length())
             return false;
+
+        for (int i = 0; i < s.length(); i++) {
+            char ch1 = s.charAt(i);
+            char ch2 = t.charAt(i);
+
+            if (d1.get(ch1) != null)
+                d1.put(ch1, d1.get(ch1) + 1);
+            else
+                d1.put(ch1, 1);
+
+            if (d2.get(ch2) != null)
+                d2.put(ch2, d2.get(ch2) + 1);
+            else
+                d2.put(ch2, 1);
         }
 
-        int[] ch = new int[26];
-        for(int i = 0; i < s.length(); i++)
-        {
-            ch[s.charAt(i) - 'a']++;
-            ch[t.charAt(i) - 'a']--;
-        }
-        for(int i = 0; i < ch.length; i++)
-        {
-            if(ch[i] != 0)
-            {
-                return false;
-            }
-        }
-        return true;
+        return d1.equals(d2);
     }
 }
