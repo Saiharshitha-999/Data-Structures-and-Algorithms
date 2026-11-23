@@ -27,13 +27,11 @@ public class Solution {
             fast = fast.next.next;
             if(slow == fast)
             {
-                f = 1;
+                slow = head;
                 break;
             }
         }
-
-        slow = head;
-        if(f == 0)
+        if(fast == null || fast.next == null)
         {
             return null;
         }
