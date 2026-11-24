@@ -17,22 +17,13 @@ class Solution {
            }
            i++;
         }
-        String a = "";
-        while(!st.isEmpty())
+
+        StringBuilder sb = new StringBuilder();
+        for(char ch : st)
         {
-            a += st.pop();
+            sb.append(ch);
         }
-        n = a.length();
-        for(i = 0; i < n; i++)
-        {
-            st.push(a.charAt(i));
-        }
-        a = "";
-        while(!st.isEmpty())
-        {
-            a += st.pop();
-        }
-        return a;
+        return sb.toString();
 
     }
 }
