@@ -17,7 +17,7 @@ class Solution {
      List<Integer> l = new ArrayList<>();
     public boolean isValidBST(TreeNode root) 
     {
-        BST(root);
+        inorder(root);
         for(int i = 0; i < l.size() - 1; i++)
         {
             if(l.get(i) >= l.get(i+1))
@@ -28,7 +28,7 @@ class Solution {
         return true;
 
     }
-    public TreeNode BST(TreeNode root)
+    public TreeNode inorder(TreeNode root)
     {
         if(root == null)
         {
@@ -36,9 +36,9 @@ class Solution {
         }
         if(root != null)
         {
-            BST(root.left);
+            inorder(root.left);
             l.add(root.val);
-            BST(root.right);
+            inorder(root.right);
         }
         return root;
     }
