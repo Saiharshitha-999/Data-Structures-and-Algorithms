@@ -22,10 +22,7 @@ class Solution {
         {
             return lowestCommonAncestor(root.right,p,q);
         }
-        else
-        {
         return root;
-        }
         
     }
 }
